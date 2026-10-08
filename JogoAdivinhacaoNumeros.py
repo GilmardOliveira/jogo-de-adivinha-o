@@ -1,26 +1,49 @@
 import random
 import math
 
-lower = int(input("Entrar com um numero inferior:- "))
+# Entrada do intervalo
+lower = int(input("Digite o limite inferior: "))
+upper = int(input("Digite o limite superior: "))
 
-upper = int(input("Entrar com um numero superior:- "))
+# Validação do intervalo
+if lower >= upper:
+    print("Erro: o limite inferior deve ser menor que o limite superior.")
+    exit()
 
-x = random.randint(lower, upper)
-print("\n\tVoce só tem ", round(math.log(upper - lower + 1, 2)),"chances para adivnhar o número inteiro\n")
+# Geração do número secreto
+secret_number = random.randint(lower, upper)
 
-count = 1
-while count < math.log(upper - lower +1, 2):
-    count += 1
-    guess = int(input("Adivinhe o número:- "))
+# Cálculo do número máximo de tentativas
+max_attempts = math.ceil(math.log2(upper - lower + 1))
 
-    if x == guess:
-        print("\n######## Parabéns você acertou com", count-1, "tentativas o número é: ", x, "########\n")
+print(
+    f"\nVocê tem {max_attempts} tentativas "
+    f"para descobrir o número entre {lower} e {upper}.\n"
+)
+
+attempts = 0
+
+while attempts < max_attempts:
+
+    guess = int(input("Adivinhe o número: "))
+    attempts += 1
+
+    if guess == secret_number:
+        print(
+            f"\n🎉 Parabéns! Você acertou em "
+            f"{attempts} tentativa(s)."
+        )
         break
-    elif x > guess:
-        print("O Número muito pequeno!")
-    elif x < guess:
-        print("O Número muito alto!")
 
-    if count >= math.log(upper - lower + 1, 2):
-        print("\n###############     O número era:- %d      ################"%x)
-        print("############### Mais sorte da proxima vez! ###################\n")
+    elif guess < secret_number:
+        print("⬆️ Tente novamente! O número é maior.")
+
+    else:
+        print("⬇️ Tente novamente! O número é menor.")
+
+else:
+    print(
+        f"\n😔 Suas tentativas acabaram."
+        f"\nO número era {secret_number}."
+        f"\nMais sorte na próxima vez!"
+    )
